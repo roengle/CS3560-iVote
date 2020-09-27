@@ -4,11 +4,17 @@ import java.util.Random;
 
 public class Student implements StudentInterface {
 
+    //Instance fields
     private int ID;
     private VotingService service;
     private String answer;
 
+    /**
+     * Constructs a Student object
+     * @param service the {@link VotingService} service
+     */
     public Student(VotingService service){
+        //Set Student ID the the instances hash code--easy solution for ID generation
         this.ID = this.hashCode();
         this.service = service;
     }
@@ -26,13 +32,22 @@ public class Student implements StudentInterface {
         //Generate answer based on question type
         switch(questionType){
             case ABCD:
+                //If question is single-choice
                 if(isSingleChoice){
+                    //Create a bank of possible answers
                     String[] bank = {"A", "B", "C", "D"};
+                    //Create a new random object
                     Random rand = new Random();
+                    //Get a random number(0 - 3) which will represent the index for the bank
                     int randomIndex = rand.nextInt(3);
+                    //Set the answer to a random selection from the bank
                     generatedAnswer = generatedAnswer + bank[randomIndex];
-                }else{
+                }
+                //If question is multiple-choice
+                else{
+                    //Create new random object
                     Random rand = new Random();
+                    //Add random answers to the answer string. Each letter has a 50% chance of being added.
                     generatedAnswer = generatedAnswer + (rand.nextBoolean() ? "A" : "");
                     generatedAnswer = generatedAnswer + (rand.nextBoolean() ? "B" : "");
                     generatedAnswer = generatedAnswer + (rand.nextBoolean() ? "C" : "");
@@ -40,15 +55,18 @@ public class Student implements StudentInterface {
                 }
                 break;
             case TRUE_FALSE:
+                //Create a new random object
                 Random rand = new Random();
+                //Set the answer to either Right or Wrong based on the random choice
                 generatedAnswer = generatedAnswer + (rand.nextBoolean() ? "Right" : "Wrong");
                 break;
         }
+        //Set the answer to our generated answer
         this.answer = generatedAnswer;
     }
 
     /**
-     * Submits answers by calling methods in VotingService
+     * Submits answers by calling method in VotingService
      */
     public void submitAnswers() {
         //Submit the first generated answer
